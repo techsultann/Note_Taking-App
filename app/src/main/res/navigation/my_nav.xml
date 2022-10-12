@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav"
+    app:startDestination="@id/noteDestination">
+
+    <fragment
+        android:id="@+id/noteDestination"
+        android:name="com.example.notetakingapp.NoteFragment"
+        android:label="fragment_note"
+        tools:layout="@layout/fragment_note" >
+        <action
+            android:id="@+id/action_noteFragment_to_editNoteFragment"
+            app:destination="@id/editNoteDestination" />
+        <action
+            android:id="@+id/action_noteFragment_to_updateNoteFragment"
+            app:destination="@id/updateNoteDestination" />
+    </fragment>
+    <fragment
+        android:id="@+id/editNoteDestination"
+        android:name="com.example.notetakingapp.EditNoteFragment"
+        android:label="fragment_edit_note"
+        tools:layout="@layout/fragment_edit_note" >
+        <action
+            android:id="@+id/action_editNoteFragment_to_noteFragment"
+            app:destination="@id/noteDestination" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateNoteDestination"
+        android:name="com.example.notetakingapp.UpdateNoteFragment"
+        android:label="fragment_update_note"
+        tools:layout="@layout/fragment_update_note" >
+        <action
+            android:id="@+id/action_updateNoteFragment_to_noteFragment"
+            app:destination="@id/noteDestination" />
+    </fragment>
+</navigation>

@@ -1,0 +1,20 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.NoteTakingApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorOnPrimary">@color/primaryTextColor</item>
+        <item name="android:statusBarColor" tools:targetApi="1">@color/primaryColor</item>
+        <!-- Secondary brand color. -->
+    </style>
+    
+    <style name="CustomToolbarStyle">
+        
+        <item name="android:textColorPrimary">@color/primaryTextColor</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textColorSecondary">@color/secondaryTextColor</item>
+        <item name="colorControlNormal">@color/primaryTextColor</item>
+        
+    </style>
+</resources>
