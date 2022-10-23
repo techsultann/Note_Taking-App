@@ -11,11 +11,12 @@
         android:label="fragment_note"
         tools:layout="@layout/fragment_note" >
         <action
-            android:id="@+id/action_noteFragment_to_editNoteFragment"
-            app:destination="@id/editNoteDestination" />
-        <action
-            android:id="@+id/action_noteFragment_to_updateNoteFragment"
-            app:destination="@id/updateNoteDestination" />
+            android:id="@+id/editNoteAction"
+            app:destination="@id/editNoteDestination"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/editNoteDestination"
@@ -23,16 +24,12 @@
         android:label="fragment_edit_note"
         tools:layout="@layout/fragment_edit_note" >
         <action
-            android:id="@+id/action_editNoteFragment_to_noteFragment"
+            android:id="@+id/action_editNoteDestination_to_noteDestination"
             app:destination="@id/noteDestination" />
     </fragment>
     <fragment
         android:id="@+id/updateNoteDestination"
         android:name="com.example.notetakingapp.UpdateNoteFragment"
         android:label="fragment_update_note"
-        tools:layout="@layout/fragment_update_note" >
-        <action
-            android:id="@+id/action_updateNoteFragment_to_noteFragment"
-            app:destination="@id/noteDestination" />
-    </fragment>
+        tools:layout="@layout/fragment_update_note" />
 </navigation>

@@ -58,6 +58,10 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:2.4.3")
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:2.4.3")
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0-alpha02")
+    // LiveData
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.0-alpha02")
 
 
 

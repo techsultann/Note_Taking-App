@@ -3,16 +3,11 @@ package com.example.notetakingapp
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.Navigation
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
-import androidx.navigation.fragment.findNavController
 import com.example.notetakingapp.databinding.FragmentNoteBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class NoteFragment : Fragment(R.layout.fragment_note), MenuProvider {
 
@@ -32,12 +27,13 @@ class NoteFragment : Fragment(R.layout.fragment_note), MenuProvider {
         }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) { 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.fabBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_noteFragment_to_editNoteFragment, null)
-        }
+
+        view.findViewById<FloatingActionButton>(R.id.fabBtn).setOnClickListener (
+            Navigation.createNavigateOnClickListener(R.id.editNoteAction, null)
+                )
 
         activity?.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
