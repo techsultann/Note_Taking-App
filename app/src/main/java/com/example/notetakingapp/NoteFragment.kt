@@ -76,7 +76,7 @@ class NoteFragment : Fragment(R.layout.fragment_note), MenuProvider {
 
     private fun updateUi(note: List<Note>) {
         if (note.isNotEmpty()){
-            binding.recyclerView.visibility = WView.VISIBLE
+            binding.recyclerView.visibility = View.VISIBLE
             binding.tvNoNoteAvailable.visibility = View.GONE
         }else{
                 binding.recyclerView.visibility = View.GONE
