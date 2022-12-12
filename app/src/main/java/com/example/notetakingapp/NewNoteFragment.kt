@@ -1,34 +1,28 @@
 package com.example.notetakingapp
 
-import android.app.Activity.RESULT_CANCELED
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.*
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.fragment.app.setFragmentResult
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import com.example.notetakingapp.adapter.NoteAdapter
 import com.example.notetakingapp.databinding.FragmentEditNoteBinding
-import com.example.notetakingapp.databinding.FragmentNoteBinding
+import com.example.notetakingapp.db.NoteDataBase
 import com.example.notetakingapp.model.Note
 import com.example.notetakingapp.viewmodel.NoteViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.snackbar.Snackbar.make
 
 
-class EditNoteFragment : Fragment() {
+class NewNoteFragment : Fragment() {
 
     private var _binding: FragmentEditNoteBinding? = null
     private val binding get() = _binding!!
-    private lateinit var noteViewModel: NoteViewModel
+    lateinit var viewModel: NoteViewModel
     private lateinit var mView: View
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,7 +70,7 @@ class EditNoteFragment : Fragment() {
         val replyIntent = Intent()
         if (noteBody.isNotEmpty()) {
 
-            noteViewModel.addNote(note)
+            viewModel.addNote(note)
             Snackbar.make(
                 requireView(),
             "Note Saved Successfully",

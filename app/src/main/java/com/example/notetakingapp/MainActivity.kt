@@ -2,26 +2,24 @@ package com.example.notetakingapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.notetakingapp.adapter.NoteAdapter
 import com.example.notetakingapp.databinding.ActivityMainBinding
-import com.example.notetakingapp.repository.NoteApplication
+import com.example.notetakingapp.db.NoteDataBase
+import com.example.notetakingapp.repository.NoteRepository
 import com.example.notetakingapp.viewmodel.NoteViewModel
-import com.example.notetakingapp.viewmodel.NoteViewModelFactory
 
-@Suppress("UNUSED_EXPRESSION")
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration:AppBarConfiguration
-    private val noteViewModel: NoteViewModel by viewModels {
-        NoteViewModelFactory((application as NoteApplication).repository)
-    }
+    lateinit var adapter: NoteAdapter
+    private lateinit var dataBase: NoteDataBase
+
+    lateinit var viewModel: NoteViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,15 +27,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        val adapter = NoteAdapter()
-        recyclerView.adapter = adapter
-
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        noteViewModel.getAllNotes.observe(this, Observer { notes ->
-            notes?.let { adapter }
-        })
 
         setSupportActionBar(binding.toolbar)
 
@@ -48,5 +37,23 @@ class MainActivity : AppCompatActivity() {
         val navController = host.navController
         appBarConfiguration = AppBarConfiguration(navController.graph)
 
-    }   
+        setupViewModel()
+
+
+    }
+
+    private fun setupViewModel() {
+        viewModel = ViewModelProvider(this,
+        ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(NoteViewModel::class.java)
+
+        viewModel.getAllNotes.observe(this) { list ->
+            list?.let {
+                adapter.submitList(list)
+            }
+        }
+
+
+    }
+
+
 }

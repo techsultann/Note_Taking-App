@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 
 @Database(entities = [Note::class], version = 1)
-public abstract class NoteDataBase: RoomDatabase() {
+abstract class NoteDataBase: RoomDatabase() {
 
 
 

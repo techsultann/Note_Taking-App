@@ -7,8 +7,9 @@ import com.example.notetakingapp.repository.NoteRepository
 import kotlinx.coroutines.launch
 
 class NoteViewModel(
+    app: Application,
     private val noteRepository: NoteRepository
-): ViewModel() {
+): AndroidViewModel(app) {
 
 
 
