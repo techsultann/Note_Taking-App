@@ -7,9 +7,8 @@ import com.example.notetakingapp.repository.NoteRepository
 import kotlinx.coroutines.launch
 
 class NoteViewModel(
-    app: Application,
-    private val noteRepository: NoteRepository
-): AndroidViewModel(app) {
+    private val noteRepository: NoteRepository,
+): ViewModel() {
 
 
 
@@ -25,5 +24,5 @@ class NoteViewModel(
         noteRepository.deleteNote(note)
     }
 
-    val getAllNotes : LiveData<List<Note>> = noteRepository.getAllNotes.asLiveData()
+    fun getAllNote() = noteRepository.getAllNotes()
 }

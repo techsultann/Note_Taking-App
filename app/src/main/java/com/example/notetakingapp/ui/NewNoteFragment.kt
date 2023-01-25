@@ -1,4 +1,4 @@
-package com.example.notetakingapp
+package com.example.notetakingapp.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,10 +7,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import com.example.notetakingapp.adapter.NoteAdapter
+import com.example.notetakingapp.R
 import com.example.notetakingapp.databinding.FragmentEditNoteBinding
-import com.example.notetakingapp.db.NoteDataBase
 import com.example.notetakingapp.model.Note
 import com.example.notetakingapp.viewmodel.NoteViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -19,10 +19,10 @@ import com.google.android.material.snackbar.Snackbar
 
 class NewNoteFragment : Fragment() {
 
+    private val noteViewModel: NoteViewModel by viewModels()
     private var _binding: FragmentEditNoteBinding? = null
     private val binding get() = _binding!!
-    lateinit var viewModel: NoteViewModel
-    private lateinit var mView: View
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,7 +70,7 @@ class NewNoteFragment : Fragment() {
         val replyIntent = Intent()
         if (noteBody.isNotEmpty()) {
 
-            viewModel.addNote(note)
+            noteViewModel.addNote(note)
             Snackbar.make(
                 requireView(),
             "Note Saved Successfully",

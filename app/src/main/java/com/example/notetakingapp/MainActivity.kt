@@ -2,30 +2,33 @@ package com.example.notetakingapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import com.example.notetakingapp.adapter.NoteAdapter
 import com.example.notetakingapp.databinding.ActivityMainBinding
-import com.example.notetakingapp.db.NoteDataBase
-import com.example.notetakingapp.repository.NoteRepository
+import com.example.notetakingapp.viewmodel.NoteApplication
 import com.example.notetakingapp.viewmodel.NoteViewModel
+import com.example.notetakingapp.viewmodel.NoteViewModelFactory
 
 
 class MainActivity : AppCompatActivity() {
 
+    private val noteViewModel: NoteViewModel by viewModels {
+        NoteViewModelFactory((application as NoteApplication).repository)
+    }
     private lateinit var binding: ActivityMainBinding
-    private lateinit var appBarConfiguration:AppBarConfiguration
-    lateinit var adapter: NoteAdapter
-    private lateinit var dataBase: NoteDataBase
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
-    lateinit var viewModel: NoteViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        /*val noteRepository = NoteRepository(NoteDataBase.createDatabase(this))
+        val noteViewModelFactory = NoteViewModelFactory(application, noteRepository)
+
+        viewModel = ViewModelProvider(this, noteViewModelFactory)[NoteViewModel::class.java]*/
 
 
         setSupportActionBar(binding.toolbar)
@@ -37,23 +40,11 @@ class MainActivity : AppCompatActivity() {
         val navController = host.navController
         appBarConfiguration = AppBarConfiguration(navController.graph)
 
-        setupViewModel()
 
-
-    }
-
-    private fun setupViewModel() {
-        viewModel = ViewModelProvider(this,
-        ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(NoteViewModel::class.java)
-
-        viewModel.getAllNotes.observe(this) { list ->
-            list?.let {
-                adapter.submitList(list)
-            }
-        }
 
 
     }
+
 
 
 }

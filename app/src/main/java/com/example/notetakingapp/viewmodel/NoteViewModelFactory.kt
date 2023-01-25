@@ -1,21 +1,20 @@
 package com.example.notetakingapp.viewmodel
 
-import android.app.Application
-import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.notetakingapp.repository.NoteRepository
 
 class NoteViewModelFactory(
+    private val repository: NoteRepository
 
-    val app: Application,
-    private val noteRepository: NoteRepository
-): ViewModelProvider.Factory {
+    ) : ViewModelProvider.Factory {
 
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(NoteViewModel::class.java)) {
 
-    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-        return NoteViewModel(app, noteRepository) as T
+            @Suppress("UNCHECKED_CAST")
+            return NoteViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel Class")
     }
-
-    }
+}

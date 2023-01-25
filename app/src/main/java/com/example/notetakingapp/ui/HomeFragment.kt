@@ -1,4 +1,4 @@
-package com.example.notetakingapp
+package com.example.notetakingapp.ui
 
 import android.os.Bundle
 import android.view.*
@@ -6,20 +6,25 @@ import androidx.fragment.app.Fragment
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.Adapter
+import com.example.notetakingapp.MainActivity
+import com.example.notetakingapp.R
 import com.example.notetakingapp.adapter.NoteAdapter
 import com.example.notetakingapp.databinding.FragmentNoteBinding
 import com.example.notetakingapp.model.Note
 import com.example.notetakingapp.viewmodel.NoteViewModel
+import com.example.notetakingapp.viewmodel.NoteViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class NoteFragment : Fragment(R.layout.fragment_note), MenuProvider {
+class HomeFragment : Fragment(R.layout.fragment_note), MenuProvider {
+
+    private val noteViewModel: NoteViewModel by viewModels()
 
     private var _binding: FragmentNoteBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: NoteViewModel by viewModels()
+
     private lateinit var noteAdapter: NoteAdapter
 
         override fun onCreateView(
@@ -36,10 +41,8 @@ class NoteFragment : Fragment(R.layout.fragment_note), MenuProvider {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         setupRecyclerview()
-        setupViewModel()
-
-
 
         view.findViewById<FloatingActionButton>(R.id.fabBtn).setOnClickListener (
             Navigation.createNavigateOnClickListener(R.id.editNoteAction, null)
@@ -59,20 +62,16 @@ class NoteFragment : Fragment(R.layout.fragment_note), MenuProvider {
         val recyclerView = binding.recyclerView
         noteAdapter = NoteAdapter()
         recyclerView.adapter = noteAdapter
-
-
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
-
-        activity?.let {
-            viewModel.getAllNotes.observe(viewLifecycleOwner) { note ->
-                noteAdapter.submitList(note)
-                updateUi(note)
-            }
+        noteViewModel.getAllNote().observe(viewLifecycleOwner) { note ->
+            noteAdapter.submitList(note)
+            updateUi(note)
         }
 
 
     }
+
 
     private fun updateUi(note: List<Note>) {
         if (note.isNotEmpty()){
@@ -84,16 +83,6 @@ class NoteFragment : Fragment(R.layout.fragment_note), MenuProvider {
         }
     }
 
-    private fun setupViewModel() {
-
-        viewModel.getAllNotes.observe(viewLifecycleOwner) { list ->
-            list?.let {
-                noteAdapter.submitList(list)
-            }
-        }
-
-
-    }
 
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
