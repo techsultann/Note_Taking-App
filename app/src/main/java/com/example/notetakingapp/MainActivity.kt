@@ -13,9 +13,9 @@ import com.example.notetakingapp.viewmodel.NoteViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
-    private val noteViewModel: NoteViewModel by viewModels {
+    /*private val noteViewModel: NoteViewModel by viewModels {
         NoteViewModelFactory((application as NoteApplication).repository)
-    }
+    }*/
     private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
 

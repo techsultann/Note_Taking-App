@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.notetakingapp.MainActivity
 import com.example.notetakingapp.R
@@ -25,8 +26,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class HomeFragment : Fragment(R.layout.fragment_note), MenuProvider {
 
-    private val noteViewModel: NoteViewModel by activityViewModels{
-        val application: Application = NoteApplication()
+    private val noteViewModel: NoteViewModel by viewModels{
+        val application = activity?.applicationContext
         NoteViewModelFactory((application as NoteApplication).repository)
     }
 
@@ -52,14 +53,17 @@ class HomeFragment : Fragment(R.layout.fragment_note), MenuProvider {
 
         setupRecyclerview()
 
-        view.findViewById<FloatingActionButton>(R.id.fabBtn).setOnClickListener (
-            Navigation.createNavigateOnClickListener(R.id.editNoteAction, null)
-                )
+        binding.fabBtn.setOnClickListener {
+            findNavController().navigate(R.id.editNoteAction, null)
+        }
+
+//        view.findViewById<FloatingActionButton>(R.id.fabBtn).setOnClickListener (
+//            Navigation.createNavigateOnClickListener(R.id.editNoteAction, null)
+//                )
 
 
 
         activity?.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
-
 
 
     }
@@ -73,7 +77,7 @@ class HomeFragment : Fragment(R.layout.fragment_note), MenuProvider {
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
         noteViewModel.getAllNote().observe(viewLifecycleOwner) { note ->
-            noteAdapter.submitList(note)
+            noteAdapter.differ.submitList(note)
             updateUi(note)
         }
 

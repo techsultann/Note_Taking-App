@@ -1,39 +1,77 @@
 package com.example.notetakingapp.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.os.LocaleListCompat.create
-import androidx.navigation.NavBackStackEntry.Companion.create
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.example.notetakingapp.R
 import com.example.notetakingapp.databinding.NoteLayoutAdapterBinding
 import com.example.notetakingapp.model.Note
-import org.w3c.dom.Text
+import com.example.notetakingapp.ui.HomeFragmentDirections
 
-class NoteAdapter: ListAdapter<Note, NoteAdapter.NoteViewHolder>(NotesComparator()) {
+class NoteAdapter: RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
+
+    inner class NoteViewHolder( val binding: NoteLayoutAdapterBinding) : RecyclerView.ViewHolder(binding.root)
+
+    private lateinit var mlistener: onItemClickListener
+
+    interface onItemClickListener{
+        fun onItemClick(position: Int)
+    }
+
+    fun setItemClickListener(clickListener: onItemClickListener) {
+        mlistener = clickListener
+    }
+
+    private val differCallBack = object : DiffUtil.ItemCallback<Note>() {
+
+        override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
+            return oldItem == newItem
+        }
+
+    }
+
+    val differ = AsyncListDiffer(this, differCallBack)
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
 
-        return NoteViewHolder.create(parent)
+        return NoteViewHolder(NoteLayoutAdapterBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        ))
     }
 
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        val currentNote = getItem(position)
+        val currentNote = differ.currentList[position]
 
-        holder.bind(currentNote.noteBody)
-        holder.bind(currentNote.noteTitle)
-        holder.bind(currentNote.id.toString())
+        holder.binding.apply {
+
+            tvNoteTitle.text = currentNote.noteTitle
+            tvNoteBody.text = currentNote.noteBody
+
+        }
+        holder.itemView.setOnClickListener { mView ->
+
+            val directions = HomeFragmentDirections.actionNoteDestinationToUpdateNoteDestination(currentNote)
+            mView.findNavController().navigate(directions)
+
+        }
 
     }
 
-    class NoteViewHolder(itemView: View) : ViewHolder(itemView) {
+    override fun getItemCount(): Int {
+        return differ.currentList.size
+    }
+
+    /*class NoteViewHolder(itemView: View) : ViewHolder(itemView) {
 
         private val noteTitleView: TextView = itemView.findViewById(R.id.tvNoteTitle)
         private val noteBodyView: TextView = itemView.findViewById(R.id.tvNoteBody)
@@ -50,22 +88,7 @@ class NoteAdapter: ListAdapter<Note, NoteAdapter.NoteViewHolder>(NotesComparator
                 return NoteViewHolder(view)
             }
         }
-    }
-
-
-
-    class NotesComparator : DiffUtil.ItemCallback<Note>() {
-
-            override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
-                return oldItem == newItem
-            }
-
-        }
-
+    }*/
 
 
 

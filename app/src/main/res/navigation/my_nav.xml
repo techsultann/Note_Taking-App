@@ -17,6 +17,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_noteDestination_to_updateNoteDestination"
+            app:destination="@id/updateNoteDestination"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/editNoteDestination"
@@ -30,6 +37,14 @@
     <fragment
         android:id="@+id/updateNoteDestination"
         android:name="com.example.notetakingapp.ui.UpdateNoteFragment"
-        android:label="fragment_update_note"
-        tools:layout="@layout/fragment_update_note" />
+        android:label="@string/update_note"
+        tools:layout="@layout/fragment_update_note" >
+        <argument
+            android:name="note"
+            app:argType="com.example.notetakingapp.model.Note"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_updateNoteDestination_to_noteDestination"
+            app:destination="@id/noteDestination" />
+    </fragment>
 </navigation>

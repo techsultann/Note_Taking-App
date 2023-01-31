@@ -12,14 +12,19 @@ import androidx.navigation.findNavController
 import com.example.notetakingapp.R
 import com.example.notetakingapp.databinding.FragmentEditNoteBinding
 import com.example.notetakingapp.model.Note
+import com.example.notetakingapp.viewmodel.NoteApplication
 import com.example.notetakingapp.viewmodel.NoteViewModel
+import com.example.notetakingapp.viewmodel.NoteViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 
 
 class NewNoteFragment : Fragment() {
 
-    private val noteViewModel: NoteViewModel by viewModels()
+    private val noteViewModel: NoteViewModel by viewModels{
+        val application = activity?.applicationContext
+        NoteViewModelFactory((application as NoteApplication).repository)
+    }
     private var _binding: FragmentEditNoteBinding? = null
     private val binding get() = _binding!!
 
@@ -38,10 +43,14 @@ class NewNoteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        view.findViewById<FloatingActionButton>(R.id.fabBtnDone).setOnClickListener{
+        binding.fabBtnDone.setOnClickListener {
+            saveNote(view)
+        }
+
+        /*view.findViewById<FloatingActionButton>(R.id.fabBtnDone).setOnClickListener{
             saveNote(view)
 
-        }
+        }*/
 
 
 
@@ -67,8 +76,8 @@ class NewNoteFragment : Fragment() {
         val noteBody = binding.etNote.text.toString().trim()
 
         val note = Note(0, noteTitle, noteBody)
-        val replyIntent = Intent()
-        if (noteBody.isNotEmpty()) {
+
+        if (noteTitle.isNotEmpty()) {
 
             noteViewModel.addNote(note)
             Snackbar.make(
@@ -79,7 +88,7 @@ class NewNoteFragment : Fragment() {
 
             view.findNavController().navigate(R.id.action_editNoteDestination_to_noteDestination)
         }else{
-            Toast.makeText(activity, "Note is Empty", Toast.LENGTH_LONG).show()
+            Toast.makeText(activity, "Note title must not be empty", Toast.LENGTH_LONG).show()
         }
 
 
