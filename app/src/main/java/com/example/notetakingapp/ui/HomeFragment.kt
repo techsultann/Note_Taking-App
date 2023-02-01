@@ -1,20 +1,15 @@
 package com.example.notetakingapp.ui
 
-import android.app.Application
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuProvider
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.notetakingapp.MainActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.example.notetakingapp.R
 import com.example.notetakingapp.adapter.NoteAdapter
 import com.example.notetakingapp.databinding.FragmentNoteBinding
@@ -22,7 +17,7 @@ import com.example.notetakingapp.model.Note
 import com.example.notetakingapp.viewmodel.NoteApplication
 import com.example.notetakingapp.viewmodel.NoteViewModel
 import com.example.notetakingapp.viewmodel.NoteViewModelFactory
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 
 class HomeFragment : Fragment(R.layout.fragment_note), MenuProvider {
 
@@ -52,14 +47,12 @@ class HomeFragment : Fragment(R.layout.fragment_note), MenuProvider {
 
 
         setupRecyclerview()
+        swipeToDelete()
 
+        // Navigates to edit note fragment
         binding.fabBtn.setOnClickListener {
             findNavController().navigate(R.id.editNoteAction, null)
         }
-
-//        view.findViewById<FloatingActionButton>(R.id.fabBtn).setOnClickListener (
-//            Navigation.createNavigateOnClickListener(R.id.editNoteAction, null)
-//                )
 
 
 
@@ -68,14 +61,14 @@ class HomeFragment : Fragment(R.layout.fragment_note), MenuProvider {
 
     }
 
-
-
+    // Setting up the recycler view
     private fun setupRecyclerview() {
         val recyclerView = binding.recyclerView
         noteAdapter = NoteAdapter()
         recyclerView.adapter = noteAdapter
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
+        // Add the list of notes in the view model to the recycler view
         noteViewModel.getAllNote().observe(viewLifecycleOwner) { note ->
             noteAdapter.differ.submitList(note)
             updateUi(note)
@@ -85,6 +78,7 @@ class HomeFragment : Fragment(R.layout.fragment_note), MenuProvider {
     }
 
 
+    // This updates the UI in the fragment to show the list of notes
     private fun updateUi(note: List<Note>) {
         if (note.isNotEmpty()){
             binding.recyclerView.visibility = View.VISIBLE
@@ -95,10 +89,53 @@ class HomeFragment : Fragment(R.layout.fragment_note), MenuProvider {
         }
     }
 
+    private fun swipeToDelete() {
+
+        // Creating a swipe to delete method for the Rv
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+                    ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+                // This is called when we swipe our item to right direction
+                // and also to get the position of item
+                val position = viewHolder.adapterPosition
+                val note = noteAdapter.differ.currentList[position]
+
+                // Remove or delete the item from Rv and Database
+                noteViewModel.deleteNote(note)
+
+                //This displays the snack bar action
+                Snackbar.make(view!!, "Note deleted successfully", Snackbar.LENGTH_SHORT).apply {
+                    setAction("UNDO") {
+                        noteViewModel.addNote(note)
+                    }
+                    show()
+                }
+
+            }
+        }
+
+        //This attach the item touch helper to the recycler view
+        ItemTouchHelper(itemTouchHelperCallback).apply {
+            attachToRecyclerView(binding.recyclerView)
+        }
+    }
+
 
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.home_menu, menu)
+        menuInflater.inflate(R.menu.search_menu, menu)
     }
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {

@@ -1,6 +1,5 @@
 package com.example.notetakingapp.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -9,13 +8,13 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.notetakingapp.R
 import com.example.notetakingapp.databinding.FragmentEditNoteBinding
 import com.example.notetakingapp.model.Note
 import com.example.notetakingapp.viewmodel.NoteApplication
 import com.example.notetakingapp.viewmodel.NoteViewModel
 import com.example.notetakingapp.viewmodel.NoteViewModelFactory
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -47,10 +46,6 @@ class NewNoteFragment : Fragment() {
             saveNote(view)
         }
 
-        /*view.findViewById<FloatingActionButton>(R.id.fabBtnDone).setOnClickListener{
-            saveNote(view)
-
-        }*/
 
 
 
@@ -62,6 +57,12 @@ class NewNoteFragment : Fragment() {
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when(menuItem.itemId) {
+                    R.id.saveMenu -> {
+                        saveNote(view)
+                    }
+                }
+
                 return true
             }
 
@@ -88,7 +89,9 @@ class NewNoteFragment : Fragment() {
 
             view.findNavController().navigate(R.id.action_editNoteDestination_to_noteDestination)
         }else{
+
             Toast.makeText(activity, "Note title must not be empty", Toast.LENGTH_LONG).show()
+            findNavController().navigate(R.id.action_editNoteDestination_to_noteDestination)
         }
 
 
