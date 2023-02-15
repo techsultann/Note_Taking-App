@@ -2,14 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="12dp"
+    android:layout_margin="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="8dp"
-        app:cardElevation="15dp">
+        app:cardElevation="16dp"
+        >
 
 
         <LinearLayout
@@ -23,6 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Note Title"
+                android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textSize="20sp"/>
             
@@ -30,9 +32,8 @@
                 android:id="@+id/tvNoteBody"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:textSize="14sp"
-                android:maxHeight="170dp"
+                android:maxLines="5"
                 android:text="Note body..."/>
 
         </LinearLayout>

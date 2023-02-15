@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/noteDestination"
         android:name="com.example.notetakingapp.ui.HomeFragment"
-        android:label="fragment_note"
-        tools:layout="@layout/fragment_note" >
+        android:label="NOTES"
+        tools:layout="@layout/fragment_note">
         <action
             android:id="@+id/editNoteAction"
             app:destination="@id/editNoteDestination"
@@ -28,8 +28,8 @@
     <fragment
         android:id="@+id/editNoteDestination"
         android:name="com.example.notetakingapp.ui.NewNoteFragment"
-        android:label="fragment_edit_note"
-        tools:layout="@layout/fragment_edit_note" >
+        android:label="Edit Note"
+        tools:layout="@layout/fragment_edit_note">
         <action
             android:id="@+id/action_editNoteDestination_to_noteDestination"
             app:destination="@id/noteDestination" />

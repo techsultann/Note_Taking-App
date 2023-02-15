@@ -22,4 +22,6 @@
 
     <color name="black">#000000</color>
 
+    <color name="grey">#eeeeee</color>
+
 </resources>
