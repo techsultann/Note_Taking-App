@@ -56,6 +56,7 @@ class NoteAdapter: RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
             tvNoteTitle.text = currentNote.noteTitle
             tvNoteBody.text = currentNote.noteBody
+            tvDateTime.text = currentNote.dateTime
 
         }
         holder.itemView.setOnClickListener { mView ->
@@ -70,25 +71,6 @@ class NoteAdapter: RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
-
-    /*class NoteViewHolder(itemView: View) : ViewHolder(itemView) {
-
-        private val noteTitleView: TextView = itemView.findViewById(R.id.tvNoteTitle)
-        private val noteBodyView: TextView = itemView.findViewById(R.id.tvNoteBody)
-
-        fun bind(text: String?) {
-            noteTitleView.text = text
-            noteBodyView.text = text
-        }
-
-        companion object {
-            fun create(parent: ViewGroup) : NoteViewHolder {
-                val view: View = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.note_layout_adapter, parent, false)
-                return NoteViewHolder(view)
-            }
-        }
-    }*/
 
 
 

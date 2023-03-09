@@ -16,14 +16,13 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="16dp"
             android:elevation="10dp"
             app:cardCornerRadius="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="16dp"
+                android:layout_margin="8dp"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -41,18 +40,25 @@
                     android:textStyle="bold"
                     />
 
+                <TextView
+                    android:id="@+id/tvDateTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:maxLines="1"
+                    />
+
 
                 <EditText
                     android:id="@+id/etNote"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:autofillHints=""
                     android:gravity="start"
                     android:hint="Type your note here"
                     android:inputType="textMultiLine"
                     android:textColor="@color/black"
-                    android:textSize="12sp"
-                    android:textStyle="italic"
+                    android:textSize="14sp"
                     />
 
             </LinearLayout>

@@ -40,6 +40,8 @@ class HomeFragment : Fragment(R.layout.fragment_note), MenuProvider, SearchView.
             // Inflate the layout for this fragment
             _binding = FragmentNoteBinding.inflate(inflater, container, false)
 
+            setupRecyclerview()
+
             return binding.root
         }
 
@@ -48,8 +50,7 @@ class HomeFragment : Fragment(R.layout.fragment_note), MenuProvider, SearchView.
         super.onViewCreated(view, savedInstanceState)
 
 
-        setupRecyclerview()
-        swipeToDelete()
+        setOfSwipeToDelete()
 
         // Navigates to edit note fragment
         binding.fabBtn.setOnClickListener {
@@ -59,7 +60,6 @@ class HomeFragment : Fragment(R.layout.fragment_note), MenuProvider, SearchView.
 
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
-
 
     }
 
@@ -91,7 +91,7 @@ class HomeFragment : Fragment(R.layout.fragment_note), MenuProvider, SearchView.
         }
     }
 
-    private fun swipeToDelete() {
+    private fun setOfSwipeToDelete() {
 
         // Creating a swipe to delete method for the Rv
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(

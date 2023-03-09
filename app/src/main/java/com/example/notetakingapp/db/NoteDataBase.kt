@@ -3,18 +3,22 @@
 package com.example.notetakingapp.db
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
+import androidx.room.migration.AutoMigrationSpec
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.notetakingapp.model.Note
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.internal.synchronized
 
 
-@Database(entities = [Note::class], version = 1, exportSchema = false)
+@Database(
+    entities = [Note::class],
+    version = 1,
+    exportSchema = true,
+
+)
 
 abstract class NoteDataBase: RoomDatabase() {
-
 
     abstract fun getNoteDao(): NoteDao
 
@@ -29,7 +33,8 @@ abstract class NoteDataBase: RoomDatabase() {
                     context.applicationContext,
                     NoteDataBase::class.java,
                     "note_db"
-                ).build()
+                ).fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = instance
                 instance
             }

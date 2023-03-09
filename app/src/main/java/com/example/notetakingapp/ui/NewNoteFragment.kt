@@ -1,8 +1,11 @@
 package com.example.notetakingapp.ui
 
+import android.icu.text.SimpleDateFormat
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -17,6 +20,10 @@ import com.example.notetakingapp.viewmodel.NoteApplication
 import com.example.notetakingapp.viewmodel.NoteViewModel
 import com.example.notetakingapp.viewmodel.NoteViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.Formatter
 
 
 class NewNoteFragment : Fragment(), MenuProvider {
@@ -39,12 +46,22 @@ class NewNoteFragment : Fragment(), MenuProvider {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
+        val currentDate = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+        val formatted = currentDate.format(formatter)
+
+        binding.tvDateTime.text =  formatted
+
+
         binding.fabBtnDone.setOnClickListener {
-            saveNote()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                saveNote()
+            }
         }
 
 
@@ -80,6 +97,7 @@ class NewNoteFragment : Fragment(), MenuProvider {
         menuInflater.inflate(R.menu.new_note_menu, menu)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when(menuItem.itemId) {
             R.id.saveMenu -> {
@@ -90,12 +108,16 @@ class NewNoteFragment : Fragment(), MenuProvider {
         return true
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun saveNote() {
 
         val noteTitle = binding.etTitle.text.toString().trim()
         val noteBody = binding.etNote.text.toString().trim()
+        val currentDate = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+        val formatted = currentDate.format(formatter)
 
-        val note = Note(0, noteTitle, noteBody)
+        val note = Note(0, noteTitle, noteBody, formatted)
 
         if (noteTitle.isNotEmpty()) {
 
@@ -106,11 +128,11 @@ class NewNoteFragment : Fragment(), MenuProvider {
             Snackbar.LENGTH_SHORT
             ).show()
 
-            findNavController().navigate(R.id.action_editNoteDestination_to_noteDestination)
+            findNavController().navigate(R.id.action_editNoteDestination_to_noteDestination, null)
         }else{
 
             Toast.makeText(activity, "Note title must not be empty", Toast.LENGTH_LONG).show()
-            findNavController().navigate(R.id.action_editNoteDestination_to_noteDestination)
+            findNavController().navigate(R.id.action_editNoteDestination_to_noteDestination, null)
         }
 
 

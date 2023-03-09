@@ -41,6 +41,15 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/tvDateTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:maxLines="1"
+                    />
+
 
                 <EditText
                     android:id="@+id/etUpdateNote"
@@ -51,8 +60,8 @@
                     android:hint="Type your note here"
                     android:inputType="textMultiLine"
                     android:textColor="@color/black"
-                    android:textSize="12sp"
-                    android:textStyle="italic" />
+                    android:textSize="14sp"
+                     />
 
             </LinearLayout>
 

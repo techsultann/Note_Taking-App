@@ -2,10 +2,12 @@ package com.example.notetakingapp.ui
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
@@ -20,6 +22,9 @@ import com.example.notetakingapp.viewmodel.NoteApplication
 import com.example.notetakingapp.viewmodel.NoteViewModel
 import com.example.notetakingapp.viewmodel.NoteViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 
 class UpdateNoteFragment : Fragment(), MenuProvider {
@@ -43,6 +48,7 @@ class UpdateNoteFragment : Fragment(), MenuProvider {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -50,15 +56,21 @@ class UpdateNoteFragment : Fragment(), MenuProvider {
 
         binding.etUpdateTitle.setText(currentNote.noteTitle)
         binding.etUpdateNote.setText(currentNote.noteBody)
+        binding.tvDateTime.text = currentNote.dateTime
 
         binding.updateFabBtn.setOnClickListener{
 
             val title = binding.etUpdateTitle.text.toString()
             val noteBody = binding.etUpdateNote.text.toString()
+            val currentDate = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+            val formatted = currentDate.format(formatter)
+
+            binding.tvDateTime.text =  formatted
 
             if(title.isNotBlank()) {
 
-                val note = Note(currentNote.id, title, noteBody)
+                val note = Note(currentNote.id, title, noteBody, formatted)
                 noteViewModel.updateNote(note)
                 findNavController().navigate(R.id.action_updateNoteDestination_to_noteDestination)
             }else{
